@@ -1,45 +1,97 @@
-**Edit a file, create a new file, and clone from Bitbucket in under 2 minutes**
+# Task
 
-When you're done, you can delete the content in this README and update the file with details for others getting started with your repository.
+In Acaisoft we love working with cloud technologies. In this task you will have to create simple UI components that will allow a user to remotely manage many servers located all around the world.
 
-*We recommend that you open this README in another tab as you perform the tasks below. You can [watch our video](https://youtu.be/0ocf7u76WSo) for a full demo of all the steps in this tutorial. Open the video in a new tab to avoid leaving Bitbucket.*
+## UI
 
----
+Marcin, a hardworking DevOps, would like to see the statuses of all the servers Acaisoft currently maintains. He would like to manually turn them on or off and sometimes reboot if neccessary.
 
-## Edit a file
+Your task is to provide such a functionality. Fortunately, our fantastic
+designer Marta made a prototype for us. Here is how it looks:
 
-You’ll start by editing this README file to learn how to edit a file in Bitbucket.
+![img](./images/server-ui.png)
 
-1. Click **Source** on the left side.
-2. Click the README.md link from the list of files.
-3. Click the **Edit** button.
-4. Delete the following text: *Delete this line to make a change to the README from Bitbucket.*
-5. After making your change, click **Commit** and then **Commit** again in the dialog. The commit page will open and you’ll see the change you just made.
-6. Go back to the **Source** page.
+Marta also made the [Invision](https://www.invisionapp.com/) project for us, so we can freely check out the styles.
+The credentials are:
+```
+Email: acaisoft@tryzoe.com
+Password: acaisoft248
+```
 
----
+### Tasks
+ 1. List all the servers.
+ 2. Provide 1:1 UI from the invision project (Pay attention to this)
+ 2. Add a clickable dropdown on the right with 2 options :
+    1. Turn on (or Turn off) - depending on the status (You can't display Turn on with Turn Off dropdown option at the same time)
+    2. Reboot (When server is rebooting please pay attention to how the dropdown looks like)
+ 3. When the server is in a `REBOOTING` status you should be pinging single server API endpoint `/servers/:serverId `  (e.g. every 1s) until the status changes.
+ 4. Allow the user to locally search for a server ( Pay attention to how your application behaves when you put something in search input)
+ 5. Add unit tests at least for rebooting functionality and if you want and you have time please add more tests.
 
-## Create a file
+### Tips
+ - We really like small components.
+ - Pay attention to code quality, conventions, formatting, etc.
+ - You can use any libraries, but when you’re using something like ngrx or any other more advanced library please give us a quick note why do you use it.
+ - Don't leave unneccesary code!!!
 
-Next, you’ll add a new file to this repository.
+### Requirements
 
-1. Click the **New file** button at the top of the **Source** page.
-2. Give the file a filename of **contributors.txt**.
-3. Enter your name in the empty file space.
-4. Click **Commit** and then **Commit** again in the dialog.
-5. Go back to the **Source** page.
+UI was created using Node.js v10.6.0. Other versions may or may not work correctly.
 
-Before you move on, go ahead and explore the repository. You've already seen the **Source** page, but check out the **Commits**, **Branches**, and **Settings** pages.
+### Installation
 
----
+In `./ui` run:
 
-## Clone a repository
+```shell
+npm install
+```
 
-Use these steps to clone from SourceTree, our client for using the repository command-line free. Cloning allows you to work on your files locally. If you don't yet have SourceTree, [download and install first](https://www.sourcetreeapp.com/). If you prefer to clone from the command line, see [Clone a repository](https://confluence.atlassian.com/x/4whODQ).
+### Run
 
-1. You’ll see the clone button under the **Source** heading. Click that button.
-2. Now click **Check out in SourceTree**. You may need to create a SourceTree account or log in.
-3. When you see the **Clone New** dialog in SourceTree, update the destination path and name if you’d like to and then click **Clone**.
-4. Open the directory you just created to see your repository’s files.
+In `./ui` run:
 
-Now that you're more familiar with your Bitbucket repository, go ahead and add a new file locally. You can [push your change back to Bitbucket with SourceTree](https://confluence.atlassian.com/x/iqyBMg), or you can [add, commit,](https://confluence.atlassian.com/x/8QhODQ) and [push from the command line](https://confluence.atlassian.com/x/NQ0zDQ).
+```shell
+npm start
+```
+
+## API
+
+To remotely administer the servers we have a REST API located in `./src` directory.
+The API provides an interface listed in the table below:
+
+| Method | Endpoint | Response | Description |
+|---|---|---|---|
+| GET | /servers | Array\<[Server](#types)\> | Returns a list of all servers. |
+| GET | /servers/:serverId | [Server](#types) | Returns a server. |
+| PUT | /servers/:serverId/on | [Server](#types) | Turns on a server |
+| PUT | /servers/:serverId/off | [Server](#types) | Turns off a server |
+| PUT | /servers/:serverId/reboot | [Server](#types) | Reboots a server |
+
+#### Types
+```typescript
+interface Server {
+    id: number;
+    name: string;
+    status: 'ONLINE' | 'OFFLINE' | 'REBOOTING';
+}
+```
+
+### Requirements
+
+Our API was created using Node.js v10.6.0. Other versions may or may not work correctly.
+
+### Installation
+
+In `./api` run:
+
+```shell
+npm install
+```
+
+### Run
+
+In `./api` run:
+
+```shell
+npm start
+```
