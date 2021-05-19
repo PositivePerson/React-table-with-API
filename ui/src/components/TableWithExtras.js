@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef } from 'react'
+import React, { Fragment, useContext, useState, useRef } from 'react'
 import ServersContext from '../context/servers/serversContext';
 
 import Table from './Table';
@@ -11,6 +11,7 @@ import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import SearchIcon from '@material-ui/icons/Search';
 import CloseIcon from '@material-ui/icons/Close';
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 
 import styled from 'styled-components'
 
@@ -29,6 +30,7 @@ const Title = styled.span`
 
 const TotResults = styled.span`
     font-size: 15px;
+    color: #494E61;
 `;
 
 const Search = styled.div`
@@ -81,46 +83,53 @@ const TableWithExtras = () => {
 
     const makeLine = ({ id, name, status }) => {
         const threeDots = (
-            <div id={id}>
-                <PopupState variant='popover' popupId='server-popup-popover'>
-                    {(popupState) => (
-                        <div>
-                            <IconButton aria-label='options' id={id} style={{ color: 'grey' }} disabled={status === 'REBOOTING'} {...bindTrigger(popupState)}>
-                                <MoreHorizIcon />
-                            </IconButton>
-                            <Popover
-                                {...bindPopover(popupState)}
-                                anchorOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'center',
-                                }}
-                                transformOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'center',
-                                }}
-                            >
-                                <StyledButtonGroup
-                                    orientation='vertical'
-                                    color='primary'
-                                    aria-label='vertical contained button group'
-                                    variant='text'
-                                >
-                                    {status === 'ONLINE' ? [
-                                        <Button onClick={() => turnOffServer(id)}>Turn off</Button>,
-                                        <Button onClick={() => rebootServer(id)}>Reboot</Button>
-                                    ] :
-                                        <Button onClick={() => turnOnServer(id)}>Turn on</Button>
 
-                                    }
-                                </StyledButtonGroup>
-                            </Popover>
-                        </div>
-                    )}
-                </PopupState>
-            </div>
+            <PopupState variant='popover' popupId='server-popup-popover'>
+                {(popupState) => (
+                    <div>
+                        <IconButton aria-label='options' id={id} style={{ color: 'grey' }} disabled={status === 'REBOOTING'} {...bindTrigger(popupState)}>
+                            <MoreHorizIcon />
+                        </IconButton>
+                        <Popover
+                            {...bindPopover(popupState)}
+                            anchorOrigin={{
+                                vertical: 'top',
+                                horizontal: 'center',
+                            }}
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'center',
+                            }}
+                        >
+                            <StyledButtonGroup
+                                orientation='vertical'
+                                color='primary'
+                                aria-label='vertical contained button group'
+                                variant='text'
+                            >
+                                {status === 'ONLINE' ? [
+                                    <Button onClick={() => turnOffServer(id)}>Turn off</Button>,
+                                    <Button onClick={() => rebootServer(id)}>Reboot</Button>
+                                ] :
+                                    <Button onClick={() => turnOnServer(id)}>Turn on</Button>
+
+                                }
+                            </StyledButtonGroup>
+                        </Popover>
+                    </div>
+                )}
+            </PopupState>
         )
 
-        return { id, name, status: status === 'REBOOTING' ? status += '...' : status, options: threeDots };
+        const styledStatus = (
+            <>
+                { status === 'ONLINE' && <div style={{ color: '#24A1A9', fontSize: '11px' }}><FiberManualRecordIcon style={{ width: '.5em' }} /> ONLINE</div>}
+                { status === 'OFFLINE' && <div style={{ fontSize: '11px' }}><CloseIcon style={{ width: '.5em', color: '#EA5885' }} /> OFFLINE</div>}
+                { status === 'REBOOTING' && <div style={{ fontSize: '11px', color: '#9CA7D3' }}>REBOOTING...</div>}
+            </>
+        )
+
+        return { id, name, status: styledStatus, options: threeDots };
     }
     const filteredServers = servers
         .map((server) => makeLine(server))
