@@ -6,10 +6,11 @@ import Table from './Table';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import IconButton from '@material-ui/core/IconButton';
-import Box from '@material-ui/core/Box';
 import Popover from '@material-ui/core/Popover';
 import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import SearchIcon from '@material-ui/icons/Search';
+import CloseIcon from '@material-ui/icons/Close';
 
 import styled from 'styled-components'
 
@@ -30,9 +31,26 @@ const TotResults = styled.span`
     font-size: 15px;
 `;
 
-const SearchBar = styled.div`
-    width: 50px;
-    background: grey;
+const Search = styled.div`
+//   padding: .5rem;
+  position: relative;
+  display: flex;  
+  align-items: center;
+//   width: 100%;
+`
+
+const SearchBar = styled.input`
+    // width: 50px;
+    // background: grey;
+    box-sizing: border-box;
+    height: 38px;
+    width: 263px;
+    border: 2px solid #D4D7E1;
+    background-color: #F2F3F6;
+    border-radius: 2em;
+
+    padding: 13px 0 14px 49px;
+    outline: none;
 `;
 
 const StyledButtonGroup = styled(ButtonGroup)`
@@ -102,7 +120,7 @@ const TableWithExtras = () => {
             </div>
         )
 
-        return { id, name, status, options: threeDots };
+        return { id, name, status: status === 'REBOOTING' ? status += '...' : status, options: threeDots };
     }
     const filteredServers = servers
         .map((server) => makeLine(server))
@@ -116,9 +134,10 @@ const TableWithExtras = () => {
                     <Title>Servers</Title>
                     <TotResults>Number of elements: {numOfElements}</TotResults>
                 </div>
-                <SearchBar>
-                    <input id='search' type='text' placeholder='Filter By Name' aria-label='Search Input' value={filterText} onChange={e => setFilterText(e.target.value)} />
-                </SearchBar>
+                <Search>
+                    <SearchIcon style={{ marginLeft: "1rem", position: "absolute", width: "21px", color: "#A9AEC1" }} />
+                    <SearchBar id='search' type='text' placeholder='Search' aria-label='Search Input' value={filterText} onChange={e => setFilterText(e.target.value)} />
+                </Search>
             </AboveTable>
             <Table filteredServers={filteredServers} />
         </>
