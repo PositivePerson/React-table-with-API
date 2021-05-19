@@ -2,7 +2,7 @@ import React, { useReducer } from 'react';
 import axios from 'axios';
 import ServersContext from './serversContext';
 import SeversReducer from './serversReducer';
-import { GET_SERVER, GET_ALL_SERVERS, UPDATE_SERVERS } from '../types';
+import { GET_SERVER, GET_ALL_SERVERS, UPDATE_SERVERS, PING_SERVER } from '../types';
 
 const ServersState = (props) => {
     const initialState = {
@@ -48,17 +48,17 @@ const ServersState = (props) => {
     }
 
     const rebootServer = async (serverId) => {
-        const res = await axios.put(`http://localhost:4454/servers/${serverId}/reboot	`);
+        const res = await axios.put(`http://localhost:4454/servers/${serverId}/reboot`);
 
         // console.log(res);
 
-        updateServers(serverId);
+        await updateServers(serverId);
+
+        listenRebootingServer(serverId);
     }
 
     const updateServers = async (serverId) => {
         const res = await axios.get(`http://localhost:4454/servers/${serverId}`);
-
-        // console.log(res);
 
         dispatch({
             type: UPDATE_SERVERS,
@@ -66,17 +66,47 @@ const ServersState = (props) => {
         })
     }
 
-    // const getServer = async (serverId) => {
+    const listenRebootingServer = async (serverId) => {
+        const result = {
+            data: {
+                status: 'REBOOTING'
+            }
+        };
 
-    //     const res = await axios.get(
-    //         `/servers/${serverId}`
-    //     );
+        function check(serverId) {
+            return new Promise(async function (resolve) {
+                setTimeout(async function () {
+                    const res = await getServer(serverId);
+                    resolve(res);
+                }, 1000, serverId)
+            })
+        }
 
-    //     dispatch({
-    //         type: GET_SERVER,
-    //         payload: res.response
-    //     });
-    // }
+        while (true) {
+            let res = {
+                data: {
+                    status: 'REBOOTING'
+                }
+            }
+
+            res = await check(serverId);
+            console.log(res.data.status);
+            if (res.data.status !== 'REBOOTING') {
+                result.data = res.data
+                break;
+            };
+        };
+
+        dispatch({
+            type: UPDATE_SERVERS,
+            payload: result.data
+        })
+    }
+
+    const getServer = async (serverId) => {
+        const res = await axios.get(`http://localhost:4454/servers/${serverId}`);
+        return res;
+    }
 
     return (
         <ServersContext.Provider
