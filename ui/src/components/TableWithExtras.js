@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useContext, useState } from 'react'
+import ServersContext from '../context/servers/serversContext';
 
 import Table from './Table';
 
@@ -27,7 +28,21 @@ const SearchBar = styled.div`
 `;
 
 const TableWithExtras = () => {
-    const numOfElements = 5
+    const serversContext = useContext(ServersContext);
+    const { servers } = serversContext;
+
+    const [filterText, setFilterText] = useState('');
+
+    const numOfElements = servers.length || 0;
+    // const numOfElements = 5;
+
+    const makeLine = ({ id, name, status }) => {
+        return { id, name, status, options: <span>Options</span> };
+    }
+    const filteredServers = servers
+        .map((server) => makeLine(server))
+        .filter(server => server.name && server.name.toLowerCase().includes(filterText.toLowerCase()))
+        ;
 
     return (
         <>
@@ -36,9 +51,11 @@ const TableWithExtras = () => {
                     <Title>Servers</Title>
                     <TotResults>Number of elements: {numOfElements}</TotResults>
                 </div>
-                <SearchBar></SearchBar>
+                <SearchBar>
+                    <input id="search" type="text" placeholder="Filter By Name" aria-label="Search Input" value={filterText} onChange={e => setFilterText(e.target.value)} />
+                </SearchBar>
             </AboveTable>
-            <Table />
+            <Table filteredServers={filteredServers} />
         </>
     )
 }
