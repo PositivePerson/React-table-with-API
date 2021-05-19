@@ -1,7 +1,15 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useRef } from 'react'
 import ServersContext from '../context/servers/serversContext';
 
 import Table from './Table';
+
+import Button from '@material-ui/core/Button';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
+import IconButton from '@material-ui/core/IconButton';
+import Box from '@material-ui/core/Box';
+import Popover from '@material-ui/core/Popover';
+import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 
 import styled from 'styled-components'
 
@@ -27,6 +35,24 @@ const SearchBar = styled.div`
     background: grey;
 `;
 
+const StyledButtonGroup = styled(ButtonGroup)`
+    & .MuiButtonGroup-groupedTextVertical:not(:last-child) {
+        border-bottom: unset;
+    }
+
+    & .MuiButton-root {
+        font-weight: 600;
+        font-size: 13px;
+        font-family: 'Open Sans', sans-serif;
+        letter-spacing: -.5px;
+        text-transform: none;
+    }
+
+    & .MuiButton-text {
+        padding: 23px 57px 23px 28px;
+    }
+`;
+
 const TableWithExtras = () => {
     const serversContext = useContext(ServersContext);
     const { servers } = serversContext;
@@ -34,10 +60,44 @@ const TableWithExtras = () => {
     const [filterText, setFilterText] = useState('');
 
     const numOfElements = servers.length || 0;
-    // const numOfElements = 5;
 
     const makeLine = ({ id, name, status }) => {
-        return { id, name, status, options: <span>Options</span> };
+        const dots = (
+            <div id={id}>
+                <PopupState variant="popover" popupId="demo-popup-popover">
+                    {(popupState) => (
+                        <div>
+                            <IconButton aria-label="options" id={id} style={{ color: "grey" }} {...bindTrigger(popupState)}>
+                                <MoreHorizIcon />
+                            </IconButton>
+                            <Popover
+                                {...bindPopover(popupState)}
+                                anchorOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'center',
+                                }}
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'center',
+                                }}
+                            >
+                                <StyledButtonGroup
+                                    orientation="vertical"
+                                    color="primary"
+                                    aria-label="vertical contained button group"
+                                    variant="text"
+                                >
+                                    <Button>Turn off</Button>
+                                    <Button>Reboot</Button>
+                                </StyledButtonGroup>
+                            </Popover>
+                        </div>
+                    )}
+                </PopupState>
+            </div>
+        )
+
+        return { id, name, status, options: dots };
     }
     const filteredServers = servers
         .map((server) => makeLine(server))
