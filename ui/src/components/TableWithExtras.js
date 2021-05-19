@@ -67,7 +67,7 @@ const TableWithExtras = () => {
                 <PopupState variant='popover' popupId='server-popup-popover'>
                     {(popupState) => (
                         <div>
-                            <IconButton aria-label='options' id={id} style={{ color: 'grey' }} disable={status !== 'ONLINE' && status !== 'OFFLINE'} {...bindTrigger(popupState)}>
+                            <IconButton aria-label='options' id={id} style={{ color: 'grey' }} disabled={status === 'REBOOTING'} {...bindTrigger(popupState)}>
                                 <MoreHorizIcon />
                             </IconButton>
                             <Popover

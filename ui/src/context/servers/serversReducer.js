@@ -1,4 +1,4 @@
-import { GET_SERVER, GET_ALL_SERVERS, UPDATE_SERVERS, PING_SERVER } from '../types';
+import { GET_SERVER, GET_ALL_SERVERS, UPDATE_SERVERS } from '../types';
 
 export default (state, action) => {
     switch (action.type) {
@@ -22,13 +22,6 @@ export default (state, action) => {
                     server.id === action.payload.id ? action.payload : server
                 )
             };
-        // case PING_SERVER:
-        //     return {
-        //         ...state,
-        //         servers: state.servers.filter(server =>
-        //             server.id === action.payload.id ? action.payload : server
-        //         )
-        //     };
         default:
             return state;
     }

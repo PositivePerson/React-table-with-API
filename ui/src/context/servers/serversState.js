@@ -2,7 +2,7 @@ import React, { useReducer } from 'react';
 import axios from 'axios';
 import ServersContext from './serversContext';
 import SeversReducer from './serversReducer';
-import { GET_SERVER, GET_ALL_SERVERS, UPDATE_SERVERS, PING_SERVER } from '../types';
+import { GET_SERVER, GET_ALL_SERVERS, UPDATE_SERVERS } from '../types';
 
 const ServersState = (props) => {
     const initialState = {
