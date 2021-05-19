@@ -55,19 +55,19 @@ const StyledButtonGroup = styled(ButtonGroup)`
 
 const TableWithExtras = () => {
     const serversContext = useContext(ServersContext);
-    const { servers } = serversContext;
+    const { servers, turnOffServer, turnOnServer, rebootServer } = serversContext;
 
     const [filterText, setFilterText] = useState('');
 
     const numOfElements = servers.length || 0;
 
     const makeLine = ({ id, name, status }) => {
-        const dots = (
+        const threeDots = (
             <div id={id}>
-                <PopupState variant="popover" popupId="demo-popup-popover">
+                <PopupState variant='popover' popupId='server-popup-popover'>
                     {(popupState) => (
                         <div>
-                            <IconButton aria-label="options" id={id} style={{ color: "grey" }} {...bindTrigger(popupState)}>
+                            <IconButton aria-label='options' id={id} style={{ color: 'grey' }} disable={status !== 'ONLINE' && status !== 'OFFLINE'} {...bindTrigger(popupState)}>
                                 <MoreHorizIcon />
                             </IconButton>
                             <Popover
@@ -82,13 +82,18 @@ const TableWithExtras = () => {
                                 }}
                             >
                                 <StyledButtonGroup
-                                    orientation="vertical"
-                                    color="primary"
-                                    aria-label="vertical contained button group"
-                                    variant="text"
+                                    orientation='vertical'
+                                    color='primary'
+                                    aria-label='vertical contained button group'
+                                    variant='text'
                                 >
-                                    <Button>Turn off</Button>
-                                    <Button>Reboot</Button>
+                                    {status === 'ONLINE' ? [
+                                        <Button onClick={() => turnOffServer(id)}>Turn off</Button>,
+                                        <Button onClick={() => rebootServer(id)}>Reboot</Button>
+                                    ] :
+                                        <Button onClick={() => turnOnServer(id)}>Turn on</Button>
+
+                                    }
                                 </StyledButtonGroup>
                             </Popover>
                         </div>
@@ -97,7 +102,7 @@ const TableWithExtras = () => {
             </div>
         )
 
-        return { id, name, status, options: dots };
+        return { id, name, status, options: threeDots };
     }
     const filteredServers = servers
         .map((server) => makeLine(server))
@@ -112,7 +117,7 @@ const TableWithExtras = () => {
                     <TotResults>Number of elements: {numOfElements}</TotResults>
                 </div>
                 <SearchBar>
-                    <input id="search" type="text" placeholder="Filter By Name" aria-label="Search Input" value={filterText} onChange={e => setFilterText(e.target.value)} />
+                    <input id='search' type='text' placeholder='Filter By Name' aria-label='Search Input' value={filterText} onChange={e => setFilterText(e.target.value)} />
                 </SearchBar>
             </AboveTable>
             <Table filteredServers={filteredServers} />
