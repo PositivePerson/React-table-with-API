@@ -1,5 +1,4 @@
-import React, { useContext } from 'react'
-import ServersContext from '../context/servers/serversContext';
+import React from 'react'
 
 import styled from 'styled-components'
 
@@ -32,15 +31,11 @@ const Line = styled.div`
 `;
 
 const Navbar = () => {
-    const serversContext = useContext(ServersContext);
-
-    const { getAllServers } = serversContext;
 
     return (
-        // <nav style={navStyle}>
         <Nav className='navbar'>
             <Logo></Logo>
-            <LogoText onClick={() => getAllServers()}>Recruitment task</LogoText>
+            <LogoText>Recruitment task</LogoText>
             <Line></Line>
         </Nav >
     )

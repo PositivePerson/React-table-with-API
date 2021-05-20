@@ -45,6 +45,7 @@ const Table = ({ filteredServers }) => {
 
     useEffect(() => {
         getAllServers();
+        // eslint-disable-next-line
     }, [])
 
     const columns = [

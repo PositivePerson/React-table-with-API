@@ -23,8 +23,6 @@ const ServersState = (props) => {
             'http://localhost:4454/servers'
         );
 
-        console.log(res.data);
-
         dispatch({
             type: GET_ALL_SERVERS,
             payload: res.data
@@ -32,19 +30,19 @@ const ServersState = (props) => {
     }
 
     const turnOffServer = async (serverId) => {
-        const res = await axios.put(`http://localhost:4454/servers/${serverId}/off	`);
+        await axios.put(`http://localhost:4454/servers/${serverId}/off	`);
 
         updateServers(serverId);
     }
 
     const turnOnServer = async (serverId) => {
-        const res = await axios.put(`http://localhost:4454/servers/${serverId}/on	`);
+        await axios.put(`http://localhost:4454/servers/${serverId}/on	`);
 
         updateServers(serverId);
     }
 
     const rebootServer = async (serverId) => {
-        const res = await axios.put(`http://localhost:4454/servers/${serverId}/reboot`);
+        await axios.put(`http://localhost:4454/servers/${serverId}/reboot`);
 
         await updateServers(serverId);
 
@@ -84,7 +82,7 @@ const ServersState = (props) => {
             }
 
             res = await check(serverId);
-            console.log(res.data.status);
+
             if (res.data.status !== 'REBOOTING') {
                 result.data = res.data
                 break;
@@ -103,16 +101,6 @@ const ServersState = (props) => {
         const res = await axios.get(`http://localhost:4454/servers/${serverId}`);
         return res;
     }
-
-    // test('listenRebootingServer', () => {
-    //     const rebooted = listenRebootingServer(2);
-    //     console.log(rebooted);
-    //     expect(rebooted).toBe({
-    //         id: 2,
-    //         name: " US East (Ohio)",
-    //         status: "ONLINE",
-    //     })
-    // })
 
     return (
         <ServersContext.Provider

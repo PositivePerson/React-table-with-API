@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useState, useRef } from 'react'
+import React, { useContext, useState } from 'react'
 import ServersContext from '../context/servers/serversContext';
 
 import Table from './Table';
@@ -34,11 +34,9 @@ const TotResults = styled.span`
 `;
 
 const Search = styled.div`
-//   padding: .5rem;
   position: relative;
   display: flex;  
   align-items: center;
-//   width: 100%;
 `
 
 const SearchBar = styled.input`
@@ -92,10 +90,9 @@ const TableWithExtras = () => {
 
     const makeLine = ({ id, name, status }) => {
         const threeDots = (
-
-            <PopupState variant='popover' popupId='server-popup-popover' id={name}>
+            <PopupState variant='popover' popupId='server-popup-popover'>
                 {(popupState) => (
-                    <div>
+                    <div key={id}>
                         <IconButton aria-label='options' style={{ color: '#9CA7D3' }} disabled={status === 'REBOOTING'} {...bindTrigger(popupState)}>
                             <MoreHorizIcon />
                         </IconButton>
@@ -117,10 +114,10 @@ const TableWithExtras = () => {
                                 variant='text'
                             >
                                 {status === 'ONLINE' ? [
-                                    <Button onClick={() => turnOffServer(id)}>Turn off</Button>,
-                                    <Button onClick={() => rebootServer(id)}>Reboot</Button>
+                                    <Button onClick={() => turnOffServer(id)} key={id}>Turn off</Button>,
+                                    <Button onClick={() => rebootServer(id)} key={id}>Reboot</Button>
                                 ] :
-                                    <Button onClick={() => turnOnServer(id)}>Turn on</Button>
+                                    <Button onClick={() => turnOnServer(id)} key={id}>Turn on</Button>
 
                                 }
                             </StyledButtonGroup>
