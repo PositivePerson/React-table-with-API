@@ -6,6 +6,7 @@ import DataTable from 'react-data-table-component';
 import styled from 'styled-components';
 
 const StyledDataTable = styled(DataTable)`
+border: 2px solid #EDEDF0;
     margin-top: .5em;
 
     & .rdt_TableHead div {
