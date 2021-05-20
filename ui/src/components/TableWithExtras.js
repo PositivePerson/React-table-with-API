@@ -115,9 +115,9 @@ const TableWithExtras = () => {
                             >
                                 {status === 'ONLINE' ? [
                                     <Button onClick={() => turnOffServer(id)} key={id}>Turn off</Button>,
-                                    <Button onClick={() => rebootServer(id)} key={id}>Reboot</Button>
+                                    <Button onClick={() => rebootServer(id)} key={id + 'i'}>Reboot</Button>
                                 ] :
-                                    <Button onClick={() => turnOnServer(id)} key={id}>Turn on</Button>
+                                    <Button onClick={() => turnOnServer(id)} key={id + 'd'}>Turn on</Button>
 
                                 }
                             </StyledButtonGroup>
