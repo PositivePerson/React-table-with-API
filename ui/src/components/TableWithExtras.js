@@ -93,10 +93,10 @@ const TableWithExtras = () => {
     const makeLine = ({ id, name, status }) => {
         const threeDots = (
 
-            <PopupState variant='popover' popupId='server-popup-popover'>
+            <PopupState variant='popover' popupId='server-popup-popover' id={name}>
                 {(popupState) => (
                     <div>
-                        <IconButton aria-label='options' id={id} style={{ color: '#9CA7D3' }} disabled={status === 'REBOOTING'} {...bindTrigger(popupState)}>
+                        <IconButton aria-label='options' style={{ color: '#9CA7D3' }} disabled={status === 'REBOOTING'} {...bindTrigger(popupState)}>
                             <MoreHorizIcon />
                         </IconButton>
                         <StyledPopover

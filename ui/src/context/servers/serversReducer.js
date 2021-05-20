@@ -1,12 +1,7 @@
-import { GET_SERVER, GET_ALL_SERVERS, UPDATE_SERVERS } from '../types';
+import { GET_ALL_SERVERS, UPDATE_SERVERS } from '../types';
 
 export default (state, action) => {
     switch (action.type) {
-        case GET_SERVER:
-            return {
-                ...state,
-                server: action.payload
-            };
         case GET_ALL_SERVERS:
             return {
                 ...state,

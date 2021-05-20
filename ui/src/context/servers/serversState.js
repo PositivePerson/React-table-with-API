@@ -2,26 +2,26 @@ import React, { useReducer } from 'react';
 import axios from 'axios';
 import ServersContext from './serversContext';
 import SeversReducer from './serversReducer';
-import { GET_SERVER, GET_ALL_SERVERS, UPDATE_SERVERS } from '../types';
+import { GET_ALL_SERVERS, UPDATE_SERVERS } from '../types';
 
 const ServersState = (props) => {
     const initialState = {
-        servers: [],
+        servers: [
+            {
+                id: 1,
+                name: " US East (Virginia)",
+                status: "ONLINE"
+            }
+        ],
         server: {}
     };
 
     const [state, dispatch] = useReducer(SeversReducer, initialState);
 
     const getAllServers = async () => {
-        // const res = await api.search.getPhotos({
-        //     query: text
-        // });
-
         const res = await axios.get(
             'http://localhost:4454/servers'
         );
-
-        // const res = await fetch('servers');
 
         console.log(res.data);
 
@@ -34,23 +34,17 @@ const ServersState = (props) => {
     const turnOffServer = async (serverId) => {
         const res = await axios.put(`http://localhost:4454/servers/${serverId}/off	`);
 
-        // console.log(res);
-
         updateServers(serverId);
     }
 
     const turnOnServer = async (serverId) => {
         const res = await axios.put(`http://localhost:4454/servers/${serverId}/on	`);
 
-        // console.log(res);
-
         updateServers(serverId);
     }
 
     const rebootServer = async (serverId) => {
         const res = await axios.put(`http://localhost:4454/servers/${serverId}/reboot`);
-
-        // console.log(res);
 
         await updateServers(serverId);
 
@@ -101,12 +95,24 @@ const ServersState = (props) => {
             type: UPDATE_SERVERS,
             payload: result.data
         })
+
+        return result.data;
     }
 
     const getServer = async (serverId) => {
         const res = await axios.get(`http://localhost:4454/servers/${serverId}`);
         return res;
     }
+
+    // test('listenRebootingServer', () => {
+    //     const rebooted = listenRebootingServer(2);
+    //     console.log(rebooted);
+    //     expect(rebooted).toBe({
+    //         id: 2,
+    //         name: " US East (Ohio)",
+    //         status: "ONLINE",
+    //     })
+    // })
 
     return (
         <ServersContext.Provider
@@ -116,8 +122,7 @@ const ServersState = (props) => {
                 getAllServers,
                 turnOffServer,
                 turnOnServer,
-                rebootServer,
-                // getServer
+                rebootServer
             }}
         >
             {props.children}
