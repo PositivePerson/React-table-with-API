@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import ServersContext from './serversContext';
 import ServersState from './serversState';
 import Adapter from 'enzyme-adapter-react-16';
