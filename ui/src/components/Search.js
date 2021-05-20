@@ -27,10 +27,20 @@ const SearchComponent = styled.div`
   align-items: center;
 `
 
+const StyledSearchIcon = styled(SearchIcon)`
+    margin-left: 1rem;
+    position: absolute;
+    color: #A9AEC1;
+
+    && {
+        width: 21px;
+    }
+`;
+
 const Search = ({ filterText, setFilterText }) => {
     return (
         <SearchComponent>
-            <SearchIcon style={{ marginLeft: "1rem", position: "absolute", width: "21px", color: "#A9AEC1" }} />
+            <StyledSearchIcon />
             <SearchBar id='search' type='text' placeholder='Search' aria-label='Search Input' value={filterText} onChange={e => setFilterText(e.target.value)} />
         </SearchComponent>
     )

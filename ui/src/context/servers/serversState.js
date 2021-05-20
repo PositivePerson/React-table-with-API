@@ -9,8 +9,8 @@ const ServersState = (props) => {
         servers: [
             {
                 id: 1,
-                name: " US East (Virginia)",
-                status: "ONLINE"
+                name: ' US East (Virginia)',
+                status: 'ONLINE'
             }
         ],
         server: {}

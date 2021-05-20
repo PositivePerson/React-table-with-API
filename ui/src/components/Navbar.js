@@ -36,7 +36,7 @@ const Navbar = () => {
         <Nav className='navbar'>
             <Logo></Logo>
             <LogoText>Recruitment task</LogoText>
-            <Line></Line>
+            <Line />
         </Nav >
     )
 }

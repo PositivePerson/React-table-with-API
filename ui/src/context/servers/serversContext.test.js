@@ -12,7 +12,7 @@ describe('reboot', () => {
 
             return (
                 <>
-                    <div data-testid="SingleServerValue">{servers[0].status}</div>
+                    <div data-testid='SingleServerValue'>{servers[0].status}</div>
                     <button onClick={() => rebootServer(1)}>findOnline</button>
                 </>
             )

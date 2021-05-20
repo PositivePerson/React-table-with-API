@@ -11,9 +11,9 @@ class App extends Component {
     return (
 
       <ServersState>
-        <div className="App">
+        <div className='App'>
           <Navbar />
-          <div className="box">
+          <div className='box'>
             <TableWithExtras />
           </div>
         </div>
