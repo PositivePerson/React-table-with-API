@@ -2,6 +2,8 @@ import React, { useContext, useState } from 'react'
 import ServersContext from '../context/servers/serversContext';
 
 import Table from './Table';
+import SearchComponent from './Search';
+import Caption from './Caption';
 
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
@@ -9,7 +11,6 @@ import IconButton from '@material-ui/core/IconButton';
 import Popover from '@material-ui/core/Popover';
 import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
-import SearchIcon from '@material-ui/icons/Search';
 import CloseIcon from '@material-ui/icons/Close';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 
@@ -19,41 +20,6 @@ const AboveTable = styled.div`
     text-align: start;
     display: flex;
     justify-content: space-between;
-`;
-
-const Title = styled.span`
-    font-size: 21px;
-    font-weight: 600;
-    color: #494E61;
-    letter-spacing: -.5px;
-`;
-
-const TotResults = styled.span`
-    font-size: 15px;
-    color: #494E61;
-`;
-
-const Search = styled.div`
-  position: relative;
-  display: flex;  
-  align-items: center;
-`
-
-const SearchBar = styled.input`
-    font-size: 14px;
-    box-sizing: border-box;
-    height: 38px;
-    width: 263px;
-    border: 2px solid #D4D7E1;
-    background-color: #F2F3F6;
-    border-radius: 2em;
-
-    padding: 13px 0 14px 49px;
-    outline: none;
-    
-    &::-webkit-input-placeholder {
-        color: #A9AEC1;
-      }
 `;
 
 const StyledButtonGroup = styled(ButtonGroup)`
@@ -86,10 +52,9 @@ const TableWithExtras = () => {
 
     const [filterText, setFilterText] = useState('');
 
-    const numOfElements = servers.length || 0;
-
     const makeLine = ({ id, name, status }) => {
         const threeDots = (
+
             <PopupState variant='popover' popupId='server-popup-popover'>
                 {(popupState) => (
                     <div key={id}>
@@ -118,13 +83,13 @@ const TableWithExtras = () => {
                                     <Button onClick={() => rebootServer(id)} key={id + 'i'}>Reboot</Button>
                                 ] :
                                     <Button onClick={() => turnOnServer(id)} key={id + 'd'}>Turn on</Button>
-
                                 }
                             </StyledButtonGroup>
                         </StyledPopover>
                     </div>
                 )}
             </PopupState>
+
         )
 
         const styledStatus = (
@@ -137,6 +102,8 @@ const TableWithExtras = () => {
 
         return { id, name, status: styledStatus, options: threeDots };
     }
+
+    const numOfElements = servers.length || 0;
     const filteredServers = servers
         .map((server) => makeLine(server))
         .filter(server => server.name && server.name.toLowerCase().includes(filterText.toLowerCase()))
@@ -145,14 +112,8 @@ const TableWithExtras = () => {
     return (
         <>
             <AboveTable>
-                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                    <Title>Servers</Title>
-                    <TotResults>Number of elements: {numOfElements}</TotResults>
-                </div>
-                <Search>
-                    <SearchIcon style={{ marginLeft: "1rem", position: "absolute", width: "21px", color: "#A9AEC1" }} />
-                    <SearchBar id='search' type='text' placeholder='Search' aria-label='Search Input' value={filterText} onChange={e => setFilterText(e.target.value)} />
-                </Search>
+                <Caption numOfElements={numOfElements} />
+                <SearchComponent filterText={filterText} setFilterText={setFilterText} />
             </AboveTable>
             <Table filteredServers={filteredServers} />
         </>
