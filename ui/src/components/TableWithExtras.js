@@ -42,8 +42,7 @@ const Search = styled.div`
 `
 
 const SearchBar = styled.input`
-    // width: 50px;
-    // background: grey;
+    font-size: 14px;
     box-sizing: border-box;
     height: 38px;
     width: 263px;
@@ -87,7 +86,7 @@ const TableWithExtras = () => {
             <PopupState variant='popover' popupId='server-popup-popover'>
                 {(popupState) => (
                     <div>
-                        <IconButton aria-label='options' id={id} style={{ color: 'grey' }} disabled={status === 'REBOOTING'} {...bindTrigger(popupState)}>
+                        <IconButton aria-label='options' id={id} style={{ color: '#9CA7D3' }} disabled={status === 'REBOOTING'} {...bindTrigger(popupState)}>
                             <MoreHorizIcon />
                         </IconButton>
                         <Popover

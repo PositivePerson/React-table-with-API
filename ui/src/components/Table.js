@@ -14,6 +14,12 @@ const StyledDataTable = styled(DataTable)`
         color: #9CA7D3;
     }
 
+    & .rdt_TableHeadRow {
+        margin-top: 41px;
+        padding-bottom: 21px;
+        min-height: 33px;
+    }
+
     & .rdt_TableRow div {
         font-weight: 600;
         color: #494E61;
@@ -22,6 +28,10 @@ const StyledDataTable = styled(DataTable)`
     & div div div div .rdt_TableCell:last-of-type {
         display: flex;
         justify-content: flex-end;    
+    }
+
+    & .rdt_TableCol:first-of-type, & .rdt_TableCell:first-of-type {
+        padding-left: 42px;
     }
 `;
 
