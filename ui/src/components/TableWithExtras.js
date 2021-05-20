@@ -52,6 +52,10 @@ const SearchBar = styled.input`
 
     padding: 13px 0 14px 49px;
     outline: none;
+    
+    &::-webkit-input-placeholder {
+        color: #A9AEC1;
+      }
 `;
 
 const StyledButtonGroup = styled(ButtonGroup)`
@@ -72,6 +76,12 @@ const StyledButtonGroup = styled(ButtonGroup)`
     }
 `;
 
+const StyledPopover = styled(Popover)`
+    & .MuiButton-textPrimary {
+        color: #494E61;
+    }
+`;
+
 const TableWithExtras = () => {
     const serversContext = useContext(ServersContext);
     const { servers, turnOffServer, turnOnServer, rebootServer } = serversContext;
@@ -89,7 +99,7 @@ const TableWithExtras = () => {
                         <IconButton aria-label='options' id={id} style={{ color: '#9CA7D3' }} disabled={status === 'REBOOTING'} {...bindTrigger(popupState)}>
                             <MoreHorizIcon />
                         </IconButton>
-                        <Popover
+                        <StyledPopover
                             {...bindPopover(popupState)}
                             anchorOrigin={{
                                 vertical: 'top',
@@ -114,7 +124,7 @@ const TableWithExtras = () => {
 
                                 }
                             </StyledButtonGroup>
-                        </Popover>
+                        </StyledPopover>
                     </div>
                 )}
             </PopupState>
